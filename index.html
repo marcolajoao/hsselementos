@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela Periódica</title>
+</head>
+<body>
+    <h1>Tabela de Elementos</h1>
+    <table id="elementos-tabela" border="1">
+        <thead>
+            <tr>
+                <th>Número Atômico</th>
+                <th>Nome</th>
+                <th>Massa</th>
+                <th>Distribuição Eletrônica</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dados serão inseridos aqui -->
+        </tbody>
+    </table>
+
+    <script>
+        async function fetchElementos() {
+            try {
+                const response = await fetch('elementos.json');  // URL do arquivo JSON no seu repositório
+                const data = await response.json();
+                const tabelaBody = document.getElementById('elementos-tabela').getElementsByTagName('tbody')[0];
+
+                data.forEach(elemento => {
+                    const row = tabelaBody.insertRow();
+                    row.insertCell(0).innerText = elemento.numero_atomico;
+                    row.insertCell(1).innerText = elemento.nome;
+                    row.insertCell(2).innerText = elemento.massa;
+                    row.insertCell(3).innerText = elemento.distribuicao_eletronica;
+                });
+            } catch (error) {
+                console.error('Erro ao buscar os dados:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchElementos);
+    </script>
+</body>
+</html>
