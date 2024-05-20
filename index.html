@@ -4,9 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabela Periódica</title>
+    <style>
+        .message {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid;
+            display: none;
+        }
+        .success {
+            color: green;
+            border-color: green;
+        }
+        .error {
+            color: red;
+            border-color: red;
+        }
+    </style>
 </head>
 <body>
     <h1>Tabela de Elementos</h1>
+
+    <form id="buscar-form">
+        <label for="numero-atomico">Digite o Número Atômico:</label>
+        <input type="number" id="numero-atomico" name="numero-atomico" required>
+        <button type="submit">Buscar</button>
+    </form>
+
+    <div id="message" class="message"></div>
+
     <table id="elementos-tabela" border="1">
         <thead>
             <tr>
@@ -25,22 +50,45 @@
         async function fetchElementos() {
             try {
                 const response = await fetch('elementos.json');  // URL do arquivo JSON no seu repositório
-                const data = await response.json();
-                const tabelaBody = document.getElementById('elementos-tabela').getElementsByTagName('tbody')[0];
-
-                data.forEach(elemento => {
-                    const row = tabelaBody.insertRow();
-                    row.insertCell(0).innerText = elemento.numero_atomico;
-                    row.insertCell(1).innerText = elemento.nome;
-                    row.insertCell(2).innerText = elemento.massa;
-                    row.insertCell(3).innerText = elemento.distribuicao_eletronica;
-                });
+                return await response.json();
             } catch (error) {
                 console.error('Erro ao buscar os dados:', error);
+                return [];
             }
         }
 
-        document.addEventListener('DOMContentLoaded', fetchElementos);
+        document.getElementById('buscar-form').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Evita o reload da página ao enviar o formulário
+            const numeroAtomico = document.getElementById('numero-atomico').value;
+            const elementos = await fetchElementos();
+            const elementoEncontrado = elementos.find(elemento => elemento.numero_atomico == numeroAtomico);
+
+            const tabelaBody = document.getElementById('elementos-tabela').getElementsByTagName('tbody')[0];
+            const messageDiv = document.getElementById('message');
+            tabelaBody.innerHTML = ''; // Limpa os resultados anteriores
+
+            if (elementoEncontrado) {
+                const row = tabelaBody.insertRow();
+                row.insertCell(0).innerText = elementoEncontrado.numero_atomico;
+                row.insertCell(1).innerText = elementoEncontrado.nome;
+                row.insertCell(2).innerText = elementoEncontrado.massa;
+                row.insertCell(3).innerText = elementoEncontrado.distribuicao_eletronica;
+
+                messageDiv.innerText = 'Elemento encontrado com sucesso!';
+                messageDiv.className = 'message success';
+                messageDiv.style.display = 'block';
+            } else {
+                const row = tabelaBody.insertRow();
+                row.insertCell(0).innerText = 'N/A';
+                row.insertCell(1).innerText = 'Elemento não encontrado';
+                row.insertCell(2).innerText = 'N/A';
+                row.insertCell(3).innerText = 'N/A';
+
+                messageDiv.innerText = 'Elemento não encontrado.';
+                messageDiv.className = 'message error';
+                messageDiv.style.display = 'block';
+            }
+        });
     </script>
 </body>
 </html>
