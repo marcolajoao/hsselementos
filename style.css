@@ -1,1 +1,16 @@
+/* Estilize os botões conforme necessário */
+button {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Centralize todo o conteúdo */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
 
