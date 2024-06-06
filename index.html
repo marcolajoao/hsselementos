@@ -7,7 +7,7 @@
     <!-- Certifique-se de informar o caminho correto do CSS no href. -->
 </head>
 <body>
-    <h1>É verdade que você é viado?Queim a rosca? Engole uma Giromba????:</h1>
+    <h1>É verdade que você é viado?Queima a rosca? Engole uma Giromba????:</h1>
     <p>Este é um exemplo de pergunta. Você concorda?</p>
     <form>
         <button type="submit">Sim</button>
@@ -23,6 +23,14 @@
             naoButton.style.position = 'absolute';
             naoButton.style.left = `${randomX}px`;
             naoButton.style.top = `${randomY}px`;
+        });
+
+        // Redirecione para o link determinado após clicar em "Sim"
+        const simButton = document.querySelector('button[type="submit"]');
+        simButton.addEventListener('click', () => {
+            // Substitua o link abaixo pelo destino desejado
+            const destino = 'https://youtu.be/D5KCYIzoZ2A?si=qjF5kRlMQjh8oJvX';
+            window.location.href = destino;
         });
     </script>
 </body>
